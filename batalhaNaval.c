@@ -1,22 +1,33 @@
 #include <stdio.h>
 
+#define LINHAS 10
+#define COLUNAS 10
+
 int main(){
     //Cria o tabuleiro 10x10 com todas as posicoes zeradas
-    int tabuleiro[10][10] = {0};
+    int tabuleiro[LINHAS][COLUNAS] = {0};
 
     int navioH[3] = {3, 3, 3}; // Navios array do navio horizontal
     int navioV[3] = {3, 3, 3}; // Navios array do navio vertical
 
-    // Define posicionamento do navio horizontal
+    // Define posicionamento dos navios horizontais
     int linhaH = 2, colunaH = 3;
     for (int i = 0; i < 3; i++) {
         tabuleiro[linhaH][colunaH + i] = navioH[i];
     }
-    
-    //Define posicionamento do navio horizontal
+    int linhaH2 = 6, colunaH2 = 4;
+    for (int i = 0; i < 3; i++) {
+        tabuleiro[linhaH2][colunaH2 + i] = navioH[i];
+    }
+
+    //Define posicionamento dos navios verticais
     int linhaV = 5, colunaV = 7;
     for (int i = 0; i < 3; i++) {
         tabuleiro[linhaV + i][colunaV] = navioV[i];
+    }
+    int linhaV2 = 7, colunaV2 = 3;
+    for (int i = 0; i < 3; i++) {
+        tabuleiro[linhaV2 + i][colunaV2] = navioV[i];
     }
 
     // Faz o tratamento de erros para verificar se os navios estão fora do tabuleiro ou colidiram
