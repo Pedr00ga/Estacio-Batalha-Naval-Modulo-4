@@ -1,6 +1,6 @@
-# 🧊 Tabuleiro com Habilidades Especiais em C
+# 🧊 Tabuleiro de batalha naval em C
 
-Este programa cria um tabuleiro 10x10 representando um jogo de navios, onde navios são posicionados horizontal e verticalmente. Ele também sobrepõe três tipos de habilidades especiais (Cone, Cruz e Octaedro) sobre o tabuleiro, destacando áreas de efeito.
+Este programa cria um tabuleiro 10x10 representando um jogo de batalha naval, onde navios são posicionados horizontal e verticalmente. Ele também sobrepõe três tipos de habilidades especiais (Cone, Cruz e Octaedro) sobre o tabuleiro, destacando áreas de efeito.
 
 ## 🔧 Requisitos
 
