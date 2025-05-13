@@ -2,15 +2,16 @@
 
 #define LINHAS 10
 #define COLUNAS 10
+#define ALTURA 3
+#define LARGURA 5
 
-int main(){
-    //Cria o tabuleiro 10x10 com todas as posicoes zeradas
+int main() {
     int tabuleiro[LINHAS][COLUNAS] = {0};
 
-    int navioH[3] = {3, 3, 3}; // Navios array do navio horizontal
-    int navioV[3] = {3, 3, 3}; // Navios array do navio vertical
+    // Posicionamento dos navios
+    int navioH[3] = {3, 3, 3};
+    int navioV[3] = {3, 3, 3};
 
-    // Define posicionamento dos navios horizontais
     int linhaH = 2, colunaH = 3;
     for (int i = 0; i < 3; i++) {
         tabuleiro[linhaH][colunaH + i] = navioH[i];
@@ -20,7 +21,6 @@ int main(){
         tabuleiro[linhaH2][colunaH2 + i] = navioH[i];
     }
 
-    //Define posicionamento dos navios verticais
     int linhaV = 5, colunaV = 7;
     for (int i = 0; i < 3; i++) {
         tabuleiro[linhaV + i][colunaV] = navioV[i];
@@ -30,27 +30,86 @@ int main(){
         tabuleiro[linhaV2 + i][colunaV2] = navioV[i];
     }
 
-    // Faz o tratamento de erros para verificar se os navios estão fora do tabuleiro ou colidiram
-    if (linhaV < 0 || linhaV >= 10 || colunaV < 0 || colunaV >= 10) {
-        printf("Posicao invalida para o navio vertical.\n");
-        return 1;
-    }
-    if (linhaH < 0 || linhaH >= 10 || colunaH < 0 || colunaH >= 10) {
-        printf("Posicao invalida para o navio horizontal.\n");
-        return 1;
+    // Matrizes 3x5 das habilidades
+    int cone[ALTURA][LARGURA] = {0};
+    int cruz[ALTURA][LARGURA] = {0};
+    int octaedro[ALTURA][LARGURA] = {0};
+
+    // Posição central: linha 1 (meio), coluna 2 (meio)
+    int centro_linha = 1;
+    int centro_coluna = 2;
+
+    // CONE: forma piramidal para baixo
+    for (int i = 0; i < ALTURA; i++) {
+        for (int j = centro_coluna - i; j <= centro_coluna + i; j++) {
+            if (j >= 0 && j < LARGURA) {
+                cone[i][j] = 1;
+            }
+        }
     }
 
-    if (linhaV == linhaH && colunaV == colunaH) {
-        printf("Navios colidiram!\n");
-        return 1;
+    // CRUZ: uma linha vertical e uma horizontal
+    for (int i = 0; i < ALTURA; i++) {
+        cruz[i][centro_coluna] = 1;
+    }
+    for (int j = 0; j < LARGURA; j++) {
+        cruz[centro_linha][j] = 1;
     }
 
-    // Mostra o tabuleiro com o navios posicionados
+    // OCTAEDRO: losango em 3x5
+    for (int i = 0; i < ALTURA; i++) {
+        for (int j = 0; j < LARGURA; j++) {
+            if (abs(i - centro_linha) + abs(j - centro_coluna) <= 1) {
+                octaedro[i][j] = 1;
+            }
+        }
+    }
+
+    // Ponto de origem no tabuleiro
+    int origemConeLinha = 1, origemConeColuna = 1;
+    int origemCruzLinha = 4, origemCruzColuna = 4;
+    int origemOctaLinha = 7, origemOctaColuna = 7;
+
+    // Função de sobreposição das habilidades
+    for (int i = 0; i < ALTURA; i++) {
+        for (int j = 0; j < LARGURA; j++) {
+            int linhaC = origemConeLinha + i - centro_linha;
+            int colunaC = origemConeColuna + j - centro_coluna;
+
+            if (linhaC >= 0 && linhaC < LINHAS && colunaC >= 0 && colunaC < COLUNAS) {
+                if (cone[i][j] == 1 && tabuleiro[linhaC][colunaC] == 0) {
+                    tabuleiro[linhaC][colunaC] = 5;
+                }
+            }
+
+            int linhaR = origemCruzLinha + i - centro_linha;
+            int colunaR = origemCruzColuna + j - centro_coluna;
+
+            if (linhaR >= 0 && linhaR < LINHAS && colunaR >= 0 && colunaR < COLUNAS) {
+                if (cruz[i][j] == 1 && tabuleiro[linhaR][colunaR] == 0) {
+                    tabuleiro[linhaR][colunaR] = 5;
+                }
+            }
+
+            int linhaO = origemOctaLinha + i - centro_linha;
+            int colunaO = origemOctaColuna + j - centro_coluna;
+
+            if (linhaO >= 0 && linhaO < LINHAS && colunaO >= 0 && colunaO < COLUNAS) {
+                if (octaedro[i][j] == 1 && tabuleiro[linhaO][colunaO] == 0) {
+                    tabuleiro[linhaO][colunaO] = 5;
+                }
+            }
+        }
+    }
+
+    // Imprime o tabuleiro
     printf("Tabuleiro:\n");
-    for(int i = 0; i < 10; i++){
-        for(int j = 0; j < 10; j++){
+    for (int i = 0; i < LINHAS; i++) {
+        for (int j = 0; j < COLUNAS; j++) {
             printf("%d ", tabuleiro[i][j]);
         }
         printf("\n");
     }
+
+    return 0;
 }
